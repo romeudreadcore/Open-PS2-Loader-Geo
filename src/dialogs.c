@@ -513,6 +513,23 @@ struct UIItem diaGSConfig[] = {
     {UI_BOOL, GSMCFG_GSMFIELDFIX, 1, 1, _STR_HINT_GSM_FIELD_FIX, 0, 0, {.intvalue = {0, 0}}},
     {UI_BREAK},
 
+    {UI_SPLITTER},
+
+    {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {"Geometry", -1}}},
+    {UI_SPACER},
+    {UI_BOOL, GSMCFG_GSMGEOMETRY, 1, 1, -1, 0, 0, {.intvalue = {0, 0}}},
+    {UI_BREAK},
+
+    {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {"Width", -1}}},
+    {UI_SPACER},
+    {UI_INT, GSMCFG_GSMWIDTH, 1, 1, -1, -5, 0, {.intvalue = {0, 0, -1024, 1024}}},
+    {UI_BREAK},
+
+    {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {"Height", -1}}},
+    {UI_SPACER},
+    {UI_INT, GSMCFG_GSMHEIGHT, 1, 1, -1, -5, 0, {.intvalue = {0, 0, -512, 512}}},
+    {UI_BREAK},
+
     // buttons
     {UI_OK, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_OK}}},
     {UI_BREAK},

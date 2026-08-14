@@ -26,6 +26,34 @@ static int gGSMVMode;    // See the related predef_vmode
 static int gGSMXOffset;  // 0 - Off, Any other positive or negative value - Relative position for X Offset
 static int gGSMYOffset;  // 0 - Off, Any other positive or negative value - Relative position for Y Offset
 static int gGSMFIELDFix; // Enables/disables the FIELD flipping emulation option. 0 for Off, 1 for On.
+static int gGSMGeometry;
+static int gGSMWidth;
+static int gGSMHeight;
+
+static u64 ApplyGSMGeometry(u64 display, int widthAdjust, int heightAdjust)
+{
+    int dw = (int)((display >> 32) & 0x0FFF);
+    int dh = (int)((display >> 44) & 0x07FF);
+
+    dw += widthAdjust;
+    dh += heightAdjust;
+
+    if (dw < 0)
+        dw = 0;
+    else if (dw > 0x0FFF)
+        dw = 0x0FFF;
+
+    if (dh < 0)
+        dh = 0;
+    else if (dh > 0x07FF)
+        dh = 0x07FF;
+
+    display &= ~(((u64)0x0FFF << 32) | ((u64)0x07FF << 44));
+    display |= ((u64)dw << 32);
+    display |= ((u64)dh << 44);
+
+    return display;
+}
 
 void InitGSMConfig(config_set_t *configSet)
 {
@@ -38,6 +66,9 @@ void InitGSMConfig(config_set_t *configSet)
     gGSMXOffset = 0;
     gGSMYOffset = 0;
     gGSMFIELDFix = 0;
+    gGSMGeometry = 0;
+    gGSMWidth = 0;
+    gGSMHeight = 0;
 
     if (configGetInt(configSet, CONFIG_ITEM_GSMSOURCE, &gGSMSource)) {
         // Load the rest of the per-game GSM configuration, only if GSM is enabled.
@@ -46,6 +77,9 @@ void InitGSMConfig(config_set_t *configSet)
             configGetInt(configSet, CONFIG_ITEM_GSMXOFFSET, &gGSMXOffset);
             configGetInt(configSet, CONFIG_ITEM_GSMYOFFSET, &gGSMYOffset);
             configGetInt(configSet, CONFIG_ITEM_GSMFIELDFIX, &gGSMFIELDFix);
+            configGetInt(configSet, CONFIG_ITEM_GSMGEOMETRY, &gGSMGeometry);
+            configGetInt(configSet, CONFIG_ITEM_GSMWIDTH, &gGSMWidth);
+            configGetInt(configSet, CONFIG_ITEM_GSMHEIGHT, &gGSMHeight);
         }
     } else {
         if (configGetInt(configGame, CONFIG_ITEM_ENABLEGSM, &gEnableGSM) && gEnableGSM) {
@@ -53,6 +87,9 @@ void InitGSMConfig(config_set_t *configSet)
             configGetInt(configGame, CONFIG_ITEM_GSMXOFFSET, &gGSMXOffset);
             configGetInt(configGame, CONFIG_ITEM_GSMYOFFSET, &gGSMYOffset);
             configGetInt(configGame, CONFIG_ITEM_GSMFIELDFIX, &gGSMFIELDFix);
+            configGetInt(configGame, CONFIG_ITEM_GSMGEOMETRY, &gGSMGeometry);
+            configGetInt(configGame, CONFIG_ITEM_GSMWIDTH, &gGSMWidth);
+            configGetInt(configGame, CONFIG_ITEM_GSMHEIGHT, &gGSMHeight);
         }
     }
 }
@@ -139,11 +176,16 @@ void PrepareGSM(char *cmdline, struct GsmConfig_t *config)
 
     FIELD_fix = gGSMFIELDFix != 0 ? 1 : 0;
 
+    u64 display = predef_vmode[gGSMVMode].display;
+
+    if (gGSMGeometry)
+    display = ApplyGSMGeometry(display, gGSMWidth, gGSMHeight);
+
     if (cmdline) {
         sprintf(cmdline, "%hhu %hhu %hhu %llu %llu %hu %u %u %d %d %d", predef_vmode[gGSMVMode].interlace,
                 predef_vmode[gGSMVMode].mode,
                 predef_vmode[gGSMVMode].ffmd,
-                predef_vmode[gGSMVMode].display,
+                display,
                 predef_vmode[gGSMVMode].syncv,
                 ((predef_vmode[gGSMVMode].ffmd) << 1) | (predef_vmode[gGSMVMode].interlace),
                 (u32)gGSMXOffset,
@@ -157,7 +199,7 @@ void PrepareGSM(char *cmdline, struct GsmConfig_t *config)
         config->interlace = predef_vmode[gGSMVMode].interlace;
         config->mode = predef_vmode[gGSMVMode].mode;
         config->ffmd = predef_vmode[gGSMVMode].ffmd;
-        config->display = predef_vmode[gGSMVMode].display;
+        config->display = display;
         config->syncv = predef_vmode[gGSMVMode].syncv;
         config->smode2 = ((predef_vmode[gGSMVMode].ffmd) << 1) | (predef_vmode[gGSMVMode].interlace);
         config->dx_offset = (u32)gGSMXOffset;
