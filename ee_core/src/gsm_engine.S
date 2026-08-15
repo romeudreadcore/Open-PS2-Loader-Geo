@@ -697,7 +697,27 @@ have_DISPLAY_write_5:
     add     $t7, $t7, $t0                           #   t7 = Calculated_DW = Calculated_DW + Target_DX - Calculated_DX  # Target DW adjusted
 
 have_DISPLAY_write_6:
+    # Geometry V2: residual horizontal adjustment after GSM has chosen MAGH
+    lb      $t0, Geometry_enable($s2)
+    beqz    $t0, geometry_width_done
+    nop
 
+    lw      $t1, Geometry_width($s2)
+    add     $t7, $t7, $t1                           # Adjust final DW
+
+    sra     $t0, $t1, 1
+    sub     $t6, $t6, $t0                           # Keep adjustment roughly centered
+
+    bltzl   $t7, geometry_width_done
+    move    $t7, $zero
+
+    slti    $t0, $t7, 4096
+    bnez    $t0, geometry_width_done
+    nop
+
+    li      $t7, 0x0FFF
+
+geometry_width_done:
     andi    $t7, $t7, 0x0FFF
     andi    $t4, $t4, 0x000F
     andi    $t6, $t6, 0x0FFF
