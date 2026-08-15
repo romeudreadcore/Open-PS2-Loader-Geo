@@ -697,10 +697,7 @@ have_DISPLAY_write_5:
     add     $t7, $t7, $t0                           #   t7 = Calculated_DW = Calculated_DW + Target_DX - Calculated_DX  # Target DW adjusted
 
 have_DISPLAY_write_6:
-        or      $t7, $zero, $t5                         # Geometry V2-C: exact Target_DW
-    dsrl    $t4, $v1, 23                            # Geometry V2-C: read Target_MAGH
-    andi    $t4, $t4, 0x000F
-    andi    $t6, $v1, 0x0FFF                        # Geometry V2-C: exact Target_DX
+
     andi    $t7, $t7, 0x0FFF
     andi    $t4, $t4, 0x000F
     andi    $t6, $t6, 0x0FFF
