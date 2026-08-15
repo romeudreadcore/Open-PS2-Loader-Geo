@@ -697,6 +697,18 @@ have_DISPLAY_write_5:
     add     $t7, $t7, $t0                           #   t7 = Calculated_DW = Calculated_DW + Target_DX - Calculated_DX  # Target DW adjusted
 
 have_DISPLAY_write_6:
+    # Geometry V2: optional manual MAGH override
+    lb      $t0, Geometry_enable($s2)
+    beqz    $t0, geometry_magh_auto
+    nop
+
+    lw      $t0, Geometry_MAGH($s2)
+    bltz    $t0, geometry_magh_auto
+    nop
+
+    move    $t4, $t0
+
+geometry_magh_auto:
     andi    $t7, $t7, 0x0FFF
     andi    $t4, $t4, 0x000F
     andi    $t6, $t6, 0x0FFF
