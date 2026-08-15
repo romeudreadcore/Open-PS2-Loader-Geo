@@ -697,9 +697,6 @@ have_DISPLAY_write_5:
     add     $t7, $t7, $t0                           #   t7 = Calculated_DW = Calculated_DW + Target_DX - Calculated_DX  # Target DW adjusted
 
 have_DISPLAY_write_6:
-    # Geometry V2 diagnostic: force a visible +64 DW adjustment
-    addi    $t7, $t7, 64
-    addi    $t6, $t6, -32
     andi    $t7, $t7, 0x0FFF
     andi    $t4, $t4, 0x000F
     andi    $t6, $t6, 0x0FFF
