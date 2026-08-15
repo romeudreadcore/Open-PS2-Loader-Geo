@@ -83,6 +83,9 @@ GS_MODE_DTV_576P=0x53
 .equ DISPLAY_fix,          16 # BYTE
 .equ FIELD_fix,            17 # BYTE
 .equ gs576P_param,         18 # BYTE
+.equ Geometry_enable,      19 # BYTE
+.equ Geometry_width,       20 # WORD
+.equ Geometry_height,      24 # WORD
 
 #GSMAdapts
 .equ Adapted_DISPLAY1,             0 # DWORD

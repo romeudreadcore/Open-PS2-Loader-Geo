@@ -178,9 +178,6 @@ void PrepareGSM(char *cmdline, struct GsmConfig_t *config)
 
     u64 display = predef_vmode[gGSMVMode].display;
 
-    if (gGSMGeometry)
-    display = ApplyGSMGeometry(display, gGSMWidth, gGSMHeight);
-
     if (cmdline) {
         sprintf(cmdline, "%hhu %hhu %hhu %llu %llu %hu %u %u %d %d %d", predef_vmode[gGSMVMode].interlace,
                 predef_vmode[gGSMVMode].mode,
@@ -207,5 +204,8 @@ void PrepareGSM(char *cmdline, struct GsmConfig_t *config)
         config->k576P_fix = k576p_fix;
         config->kGsDxDyOffsetSupported = kGsDxDyOffsetSupported;
         config->FIELD_fix = FIELD_fix;
+        config->geometry_enable = gGSMGeometry;
+        config->geometry_width = gGSMWidth;
+        config->geometry_height = gGSMHeight;
     }
 }

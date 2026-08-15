@@ -62,7 +62,7 @@ GSMSourceGSRegs:    .space 88
 GSMDestGSRegs:      .space 88
 
 .globl GSMFlags
-GSMFlags: .space 19
+GSMFlags: .space 28
 
 .p2align 4                                          # align 16 bytes (IMPORTANT!!!)
 

@@ -24,6 +24,9 @@ struct GsmConfig_t
     int k576P_fix;
     int kGsDxDyOffsetSupported;
     int FIELD_fix;
+    int geometry_enable;
+    int geometry_width;
+    int geometry_height;
 };
 
 
