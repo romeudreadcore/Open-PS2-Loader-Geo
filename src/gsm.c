@@ -177,7 +177,7 @@ void PrepareGSM(char *cmdline, struct GsmConfig_t *config)
     FIELD_fix = gGSMFIELDFix != 0 ? 1 : 0;
 
     u64 display = predef_vmode[gGSMVMode].display;
-    display = ApplyGSMGeometry(display, 96, 0);
+    display = ApplyGSMGeometry(display, 95, 0);
 
     if (cmdline) {
         sprintf(cmdline, "%hhu %hhu %hhu %llu %llu %hu %u %u %d %d %d", predef_vmode[gGSMVMode].interlace,
