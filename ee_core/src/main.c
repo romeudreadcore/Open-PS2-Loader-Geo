@@ -107,7 +107,9 @@ static int eecoreInit(int argc, char **argv)
             config->GsmConfig.FIELD_fix,
             config->GsmConfig.geometry_enable,
             config->GsmConfig.geometry_width,
-            config->GsmConfig.geometry_height);
+            config->GsmConfig.geometry_height,
+            config->GsmConfig.geometry_magh,
+            config->GsmConfig.geometry_magv);
         EnableGSM();
     }
 

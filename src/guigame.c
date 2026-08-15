@@ -37,6 +37,8 @@ static int GSMFIELDFix;
 static int GSMGeometry;
 static int GSMWidth;
 static int GSMHeight;
+static int GSMMAGH;
+static int GSMMAGV;
 
 static int EnableCheat;
 static int CheatMode;
@@ -365,6 +367,9 @@ static void guiGameSetGSMSettingsState(void)
     diaSetEnabled(diaGSConfig, GSMCFG_GSMGEOMETRY, EnableGSM);
     diaSetEnabled(diaGSConfig, GSMCFG_GSMWIDTH, EnableGSM && GSMGeometry);
     diaSetEnabled(diaGSConfig, GSMCFG_GSMHEIGHT, EnableGSM && GSMGeometry);
+
+    diaSetEnabled(diaGSConfig, GSMCFG_GSMMAGH, EnableGSM && GSMGeometry);
+    diaSetEnabled(diaGSConfig, GSMCFG_GSMMAGV, EnableGSM && GSMGeometry);
 }
 
 static int guiGameGSMUpdater(int modified)
@@ -424,6 +429,8 @@ void guiGameShowGSConfig(void)
     diaSetEnabled(diaGSConfig, GSMCFG_GSMGEOMETRY, EnableGSM);
     diaSetEnabled(diaGSConfig, GSMCFG_GSMWIDTH, EnableGSM && GSMGeometry);
     diaSetEnabled(diaGSConfig, GSMCFG_GSMHEIGHT, EnableGSM && GSMGeometry);
+    diaSetEnabled(diaGSConfig, GSMCFG_GSMMAGH, EnableGSM && GSMGeometry);
+    diaSetEnabled(diaGSConfig, GSMCFG_GSMMAGV, EnableGSM && GSMGeometry);
 
     diaExecuteDialog(diaGSConfig, -1, 1, &guiGameGSMUpdater);
 }
@@ -1027,6 +1034,8 @@ int guiGameSaveConfig(config_set_t *configSet, item_list_t *support)
     diaGetInt(diaGSConfig, GSMCFG_GSMGEOMETRY, &GSMGeometry);
     diaGetInt(diaGSConfig, GSMCFG_GSMWIDTH, &GSMWidth);
     diaGetInt(diaGSConfig, GSMCFG_GSMHEIGHT, &GSMHeight);
+    diaGetInt(diaGSConfig, GSMCFG_GSMMAGH, &GSMMAGH);
+    diaGetInt(diaGSConfig, GSMCFG_GSMMAGV, &GSMMAGV);
 
     if (gGSMSource == SETTINGS_PERGAME) {
         result = configSetInt(configSet, CONFIG_ITEM_GSMSOURCE, gGSMSource);
@@ -1070,6 +1079,16 @@ int guiGameSaveConfig(config_set_t *configSet, item_list_t *support)
         else
             configRemoveKey(configSet, CONFIG_ITEM_GSMHEIGHT);
 
+        if (GSMMAGH != -1)
+            result = configSetInt(configSet, CONFIG_ITEM_GSMMAGH, GSMMAGH);
+        else
+            configRemoveKey(configSet, CONFIG_ITEM_GSMMAGH);
+
+        if (GSMMAGV != -1)
+            result = configSetInt(configSet, CONFIG_ITEM_GSMMAGV, GSMMAGV);
+        else
+            configRemoveKey(configSet, CONFIG_ITEM_GSMMAGV);
+
     } else if (gGSMSource == SETTINGS_GLOBAL) {
         configSetInt(configGame, CONFIG_ITEM_ENABLEGSM, EnableGSM);
         configSetInt(configGame, CONFIG_ITEM_GSMVMODE, GSMVMode);
@@ -1079,6 +1098,8 @@ int guiGameSaveConfig(config_set_t *configSet, item_list_t *support)
         configSetInt(configGame, CONFIG_ITEM_GSMGEOMETRY, GSMGeometry);
         configSetInt(configGame, CONFIG_ITEM_GSMWIDTH, GSMWidth);
         configSetInt(configGame, CONFIG_ITEM_GSMHEIGHT, GSMHeight);
+        configSetInt(configGame, CONFIG_ITEM_GSMMAGH, GSMMAGH);
+        configSetInt(configGame, CONFIG_ITEM_GSMMAGV, GSMMAGV);
     }
 
     /// Cheats ///
@@ -1146,6 +1167,8 @@ void guiGameRemoveGlobalSettings(config_set_t *configGame)
         configRemoveKey(configGame, CONFIG_ITEM_GSMGEOMETRY);
         configRemoveKey(configGame, CONFIG_ITEM_GSMWIDTH);
         configRemoveKey(configGame, CONFIG_ITEM_GSMHEIGHT);
+        configRemoveKey(configGame, CONFIG_ITEM_GSMMAGH);
+        configRemoveKey(configGame, CONFIG_ITEM_GSMMAGV);
 
         // OSD Language
         configRemoveKey(configGame, CONFIG_ITEM_OSD_SETTINGS_LANGID);
@@ -1182,6 +1205,8 @@ void guiGameRemoveSettings(config_set_t *configSet)
         configRemoveKey(configSet, CONFIG_ITEM_GSMGEOMETRY);
         configRemoveKey(configSet, CONFIG_ITEM_GSMWIDTH);
         configRemoveKey(configSet, CONFIG_ITEM_GSMHEIGHT);
+        configRemoveKey(configSet, CONFIG_ITEM_GSMMAGH);
+        configRemoveKey(configSet, CONFIG_ITEM_GSMMAGV);
 
         // Cheats
         configRemoveKey(configSet, CONFIG_ITEM_CHEATSSOURCE);
@@ -1227,6 +1252,8 @@ static void guiGameLoadGSMConfig(config_set_t *configSet, config_set_t *configGa
     GSMGeometry = 0;
     GSMWidth = 0;
     GSMHeight = 0;
+    GSMMAGH = -1;
+    GSMMAGV = -1;
 
     // set global settings.
     gGSMSource = 0;
@@ -1238,6 +1265,12 @@ static void guiGameLoadGSMConfig(config_set_t *configSet, config_set_t *configGa
     configGetInt(configGame, CONFIG_ITEM_GSMGEOMETRY, &GSMGeometry);
     configGetInt(configGame, CONFIG_ITEM_GSMWIDTH, &GSMWidth);
     configGetInt(configGame, CONFIG_ITEM_GSMHEIGHT, &GSMHeight);
+    if (!configGetInt(configGame, CONFIG_ITEM_GSMMAGH, &GSMMAGH))
+    GSMMAGH = -1;
+
+    if (!configGetInt(configGame, CONFIG_ITEM_GSMMAGV, &GSMMAGV))
+    GSMMAGV = -1;
+    
 
     // override global with per-game settings if available and selected.
     configGetInt(configSet, CONFIG_ITEM_GSMSOURCE, &gGSMSource);
@@ -1258,6 +1291,10 @@ static void guiGameLoadGSMConfig(config_set_t *configSet, config_set_t *configGa
             GSMWidth = 0;
         if (!configGetInt(configSet, CONFIG_ITEM_GSMHEIGHT, &GSMHeight))
             GSMHeight = 0;
+        if (!configGetInt(configSet, CONFIG_ITEM_GSMMAGH, &GSMMAGH))
+            GSMMAGH = -1;
+        if (!configGetInt(configSet, CONFIG_ITEM_GSMMAGV, &GSMMAGV))
+            GSMMAGV = -1;
     }
 
     // set gui settings.
@@ -1270,6 +1307,8 @@ static void guiGameLoadGSMConfig(config_set_t *configSet, config_set_t *configGa
     diaSetInt(diaGSConfig, GSMCFG_GSMGEOMETRY, GSMGeometry);
     diaSetInt(diaGSConfig, GSMCFG_GSMWIDTH, GSMWidth);
     diaSetInt(diaGSConfig, GSMCFG_GSMHEIGHT, GSMHeight);
+    diaSetInt(diaGSConfig, GSMCFG_GSMMAGH, GSMMAGH);
+    diaSetInt(diaGSConfig, GSMCFG_GSMMAGV, GSMMAGV);
 }
 
 static void guiGameLoadCheatsConfig(config_set_t *configSet, config_set_t *configGame)

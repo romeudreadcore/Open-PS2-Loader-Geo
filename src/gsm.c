@@ -29,6 +29,8 @@ static int gGSMFIELDFix; // Enables/disables the FIELD flipping emulation option
 static int gGSMGeometry;
 static int gGSMWidth;
 static int gGSMHeight;
+static int gGSMMAGH;
+static int gGSMMAGV;
 
 static u64 ApplyGSMGeometry(u64 display, int widthAdjust, int heightAdjust)
 {
@@ -69,6 +71,8 @@ void InitGSMConfig(config_set_t *configSet)
     gGSMGeometry = 0;
     gGSMWidth = 0;
     gGSMHeight = 0;
+    gGSMMAGH = -1;
+    gGSMMAGV = -1;
 
     if (configGetInt(configSet, CONFIG_ITEM_GSMSOURCE, &gGSMSource)) {
         // Load the rest of the per-game GSM configuration, only if GSM is enabled.
@@ -80,6 +84,8 @@ void InitGSMConfig(config_set_t *configSet)
             configGetInt(configSet, CONFIG_ITEM_GSMGEOMETRY, &gGSMGeometry);
             configGetInt(configSet, CONFIG_ITEM_GSMWIDTH, &gGSMWidth);
             configGetInt(configSet, CONFIG_ITEM_GSMHEIGHT, &gGSMHeight);
+            configGetInt(configSet, CONFIG_ITEM_GSMMAGH, &gGSMMAGH);
+            configGetInt(configSet, CONFIG_ITEM_GSMMAGV, &gGSMMAGV);
         }
     } else {
         if (configGetInt(configGame, CONFIG_ITEM_ENABLEGSM, &gEnableGSM) && gEnableGSM) {
@@ -90,6 +96,8 @@ void InitGSMConfig(config_set_t *configSet)
             configGetInt(configGame, CONFIG_ITEM_GSMGEOMETRY, &gGSMGeometry);
             configGetInt(configGame, CONFIG_ITEM_GSMWIDTH, &gGSMWidth);
             configGetInt(configGame, CONFIG_ITEM_GSMHEIGHT, &gGSMHeight);
+            configGetInt(configGame, CONFIG_ITEM_GSMMAGH, &gGSMMAGH);
+            configGetInt(configGame, CONFIG_ITEM_GSMMAGV, &gGSMMAGV);
         }
     }
 }
@@ -177,7 +185,6 @@ void PrepareGSM(char *cmdline, struct GsmConfig_t *config)
     FIELD_fix = gGSMFIELDFix != 0 ? 1 : 0;
 
     u64 display = predef_vmode[gGSMVMode].display;
-    display = ApplyGSMGeometry(display, 95, 0);
 
     if (cmdline) {
         sprintf(cmdline, "%hhu %hhu %hhu %llu %llu %hu %u %u %d %d %d", predef_vmode[gGSMVMode].interlace,
@@ -208,5 +215,7 @@ void PrepareGSM(char *cmdline, struct GsmConfig_t *config)
         config->geometry_enable = gGSMGeometry;
         config->geometry_width = gGSMWidth;
         config->geometry_height = gGSMHeight;
+        config->geometry_magh = gGSMMAGH;
+        config->geometry_magv = gGSMMAGV;
     }
 }

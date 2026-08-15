@@ -86,6 +86,8 @@ GS_MODE_DTV_576P=0x53
 .equ Geometry_enable,      19 # BYTE
 .equ Geometry_width,       20 # WORD
 .equ Geometry_height,      24 # WORD
+.equ Geometry_MAGH,        28 # WORD
+.equ Geometry_MAGV,        32 # WORD
 
 #GSMAdapts
 .equ Adapted_DISPLAY1,             0 # DWORD

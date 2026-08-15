@@ -27,6 +27,8 @@ struct GsmConfig_t
     int geometry_enable;
     int geometry_width;
     int geometry_height;
+    int geometry_magh;
+    int geometry_magv;
 };
 
 

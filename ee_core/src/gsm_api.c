@@ -69,6 +69,8 @@ struct GSMFlags
     u8 geometry_enable;
     s32 geometry_width;
     s32 geometry_height;
+    s32 geometry_magh;
+    s32 geometry_magv;
 } __attribute__((packed));
 
 extern struct GSMDestSetGsCrt GSMDestSetGsCrt;
@@ -88,6 +90,7 @@ void UpdateGSMParams(s16 interlace, s16 mode, s16 ffmd, u64 display, u64 syncv, 
 {
     unsigned int hvParam = GetGsVParam();
     int gs_DH, gs_DW, gs_DY, gs_DX;
+    int geometry_magh, int geometry_magv
 
     GSMDestSetGsCrt.interlace = interlace;
     GSMDestSetGsCrt.mode = mode;
@@ -115,6 +118,9 @@ void UpdateGSMParams(s16 interlace, s16 mode, s16 ffmd, u64 display, u64 syncv, 
     GSMFlags.geometry_enable = geometry_enable ? 1 : 0;
     GSMFlags.geometry_width = geometry_width;
     GSMFlags.geometry_height = geometry_height;
+    GSMFlags.geometry_magh = geometry_magh;
+    GSMFlags.geometry_magv = geometry_magv;
+    
 
     if (kGsDxDyOffsetSupported && (!(mode >= GS_MODE_NTSC && mode <= GS_MODE_PAL))) {
         _GetGsDxDyOffset(mode, &gs_DX, &gs_DY, &gs_DW, &gs_DH);

@@ -530,6 +530,16 @@ struct UIItem diaGSConfig[] = {
     {UI_INT, GSMCFG_GSMHEIGHT, 1, 1, -1, -5, 0, {.intvalue = {0, 0, -512, 512}}},
     {UI_BREAK},
 
+    {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {"H Magnification", -1}}},
+    {UI_SPACER},
+    {UI_INT, GSMCFG_GSMMAGH, 1, 1, -1, -5, 0, {.intvalue = {-1, -1, -1, 15}}},
+    {UI_BREAK},
+
+    {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {"V Magnification", -1}}},
+    {UI_SPACER},
+    {UI_INT, GSMCFG_GSMMAGV, 1, 1, -1, -5, 0, {.intvalue = {-1, -1, -1, 3}}},
+    {UI_BREAK},
+
     // buttons
     {UI_OK, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_OK}}},
     {UI_BREAK},
