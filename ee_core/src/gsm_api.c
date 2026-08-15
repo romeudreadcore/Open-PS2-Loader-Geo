@@ -98,7 +98,7 @@ void UpdateGSMParams(s16 interlace, s16 mode, s16 ffmd, u64 display, u64 syncv, 
     GSMFlags.dx_offset = (u32)dx_offset; // X-axis offset -> Use it only when automatic adaptations formulas don't suffice
     GSMFlags.dy_offset = (u32)dy_offset; // Y-axis offset -> Use it only when automatic adaptations formulas don't suffice
     // 0 = Off, 1 = On
-    GSMFlags.ADAPTATION_fix = 0; // Geometry Mod V2 test: disable automatic DISPLAY adaptation
+    GSMFlags.ADAPTATION_fix = 1; // Default = 1 = On
     GSMFlags.PMODE_fix = 0;      // Default = 0 = Off
     GSMFlags.SMODE1_fix = 0;     // Default = 0 = Off
     GSMFlags.SMODE2_fix = 1;     // Default = 1 = On
