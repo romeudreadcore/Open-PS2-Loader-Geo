@@ -658,6 +658,18 @@ have_DISPLAY_write_1:
     addi    $t6, $t5, 1                             # t6 = Target_Width = Target_DW + 1
     divu    $t6, $t4                                # LO = Target_Width_Scale = Target_Width / Source_Pixels_Width
     mflo    $t0                                     # t0 = LO = Target_Width_Scale
+        # Geometry V2: manual horizontal scale
+    lb      $t1, Geometry_enable($s2)
+    beqz    $t1, geometry_magh_scale_auto
+    nop
+
+    lw      $t1, Geometry_MAGH($s2)
+    bltz    $t1, geometry_magh_scale_auto
+    nop
+
+    addi    $t0, $t1, 1        # MAGH 0 = scale 1, MAGH 1 = scale 2, etc.
+
+geometry_magh_scale_auto:
     bne     $t0, $zero, have_DISPLAY_write_2        # in case of (!Target_Width_Scale)
     nop                                             # {
     or      $t7, $zero, $t5                         #   t7 = Target_DW = Target_Width - 1
@@ -697,18 +709,6 @@ have_DISPLAY_write_5:
     add     $t7, $t7, $t0                           #   t7 = Calculated_DW = Calculated_DW + Target_DX - Calculated_DX  # Target DW adjusted
 
 have_DISPLAY_write_6:
-    # Geometry V2: optional manual MAGH override
-    lb      $t0, Geometry_enable($s2)
-    beqz    $t0, geometry_magh_auto
-    nop
-
-    lw      $t0, Geometry_MAGH($s2)
-    bltz    $t0, geometry_magh_auto
-    nop
-
-    move    $t4, $t0
-
-geometry_magh_auto:
     andi    $t7, $t7, 0x0FFF
     andi    $t4, $t4, 0x000F
     andi    $t6, $t6, 0x0FFF
