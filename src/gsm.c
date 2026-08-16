@@ -186,6 +186,11 @@ void PrepareGSM(char *cmdline, struct GsmConfig_t *config)
 
     u64 display = predef_vmode[gGSMVMode].display;
 
+    if (gGSMGeometry && gGSMMAGH >= 0) {
+    display &= ~((u64)0x0F << 23);
+    display |= ((u64)(gGSMMAGH & 0x0F) << 23);
+    }
+
     if (cmdline) {
         sprintf(cmdline, "%hhu %hhu %hhu %llu %llu %hu %u %u %d %d %d", predef_vmode[gGSMVMode].interlace,
                 predef_vmode[gGSMVMode].mode,
