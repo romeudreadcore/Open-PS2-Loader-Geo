@@ -402,6 +402,7 @@ void guiGameShowGSConfig(void)
         "VGA 1024x768p @85Hz",
         "VGA 1280x1024p @60Hz",
         "VGA 1280x1024p @75Hz",
+        "HDTV 480p Wide @60Hz",
         NULL};
     // clang-format on
 
