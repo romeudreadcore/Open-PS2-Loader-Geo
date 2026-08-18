@@ -104,7 +104,8 @@ static int eecoreInit(int argc, char **argv)
             config->GsmConfig.dy_offset,
             config->GsmConfig.k576P_fix,
             config->GsmConfig.kGsDxDyOffsetSupported,
-            config->GsmConfig.FIELD_fix);
+            config->GsmConfig.FIELD_fix,
+            config->GsmConfig.wide_mode););
         EnableGSM();
     }
 

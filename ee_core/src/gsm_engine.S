@@ -62,7 +62,7 @@ GSMSourceGSRegs:    .space 88
 GSMDestGSRegs:      .space 88
 
 .globl GSMFlags
-GSMFlags: .space 19
+GSMFlags: .space 20
 
 .p2align 4                                          # align 16 bytes (IMPORTANT!!!)
 
@@ -658,6 +658,14 @@ have_DISPLAY_write_1:
     addi    $t6, $t5, 1                             # t6 = Target_Width = Target_DW + 1
     divu    $t6, $t4                                # LO = Target_Width_Scale = Target_Width / Source_Pixels_Width
     mflo    $t0                                     # t0 = LO = Target_Width_Scale
+        # OPL 480p Wide: force 2x horizontal magnification
+    lb      $t1, Wide_mode($s2)
+    beqz    $t1, wide_scale_done
+    nop
+
+    li      $t0, 2
+
+wide_scale_done:
     bne     $t0, $zero, have_DISPLAY_write_2        # in case of (!Target_Width_Scale)
     nop                                             # {
     or      $t7, $zero, $t5                         #   t7 = Target_DW = Target_Width - 1
@@ -697,6 +705,16 @@ have_DISPLAY_write_5:
     add     $t7, $t7, $t0                           #   t7 = Calculated_DW = Calculated_DW + Target_DX - Calculated_DX  # Target DW adjusted
 
 have_DISPLAY_write_6:
+    # OPL 480p Wide: crop 768px source to centered 720px window
+    lb      $t0, Wide_mode($s2)
+    beqz    $t0, wide_display_done
+    nop
+
+    li      $t7, 1439       # 720 logical pixels at MAGH=1
+    li      $t4, 1          # horizontal magnification 2x
+    li      $t6, 232        # 480p horizontal start
+
+wide_display_done:
     andi    $t7, $t7, 0x0FFF
     andi    $t4, $t4, 0x000F
     andi    $t6, $t6, 0x0FFF

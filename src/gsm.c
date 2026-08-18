@@ -167,5 +167,6 @@ void PrepareGSM(char *cmdline, struct GsmConfig_t *config)
         config->k576P_fix = k576p_fix;
         config->kGsDxDyOffsetSupported = kGsDxDyOffsetSupported;
         config->FIELD_fix = FIELD_fix;
+        config->wide_mode = (gGSMVMode == 29);
     }
 }
