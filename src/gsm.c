@@ -102,7 +102,7 @@ void PrepareGSM(char *cmdline, struct GsmConfig_t *config)
         {GS_NONINTERLACED, GS_MODE_VGA_1024_85, GS_FRAME, makeDISPLAY(767,  1023, 0,   0,   30,  290), makeSYNCV(3,  768,  0,    36,  0,   1)},
         {GS_NONINTERLACED, GS_MODE_VGA_1280_60, GS_FRAME, makeDISPLAY(1023, 1279, 1,   1,   40,  350), makeSYNCV(3,  1024, 0,    38,  0,   1)},
         {GS_NONINTERLACED, GS_MODE_VGA_1280_75, GS_FRAME, makeDISPLAY(1023, 1279, 1,   1,   40,  350), makeSYNCV(3,  1024, 0,    38,  0,   1)},
-        {GS_NONINTERLACED, GS_MODE_DTV_480P,    GS_FRAME, makeDISPLAY(479,  1679, 0,   1,   35,  112), makeSYNCV(6,  483,  3072, 30,  0,   6)},
+        {GS_NONINTERLACED, GS_MODE_DTV_480P,    GS_FRAME, makeDISPLAY(479,  1599, 0,   1,   35,  152), makeSYNCV(6,  483,  3072, 30,  0,   6)},
         {GS_NONINTERLACED, GS_MODE_DTV_720P,    GS_FRAME, makeDISPLAY(960,  1706, 1,   1,   24,  302), makeSYNCV(5,  720,  0,    20,  0,   5)},}; //ends predef_vmode definition
     // clang-format on
     int k576p_fix, kGsDxDyOffsetSupported, fd, FIELD_fix;
